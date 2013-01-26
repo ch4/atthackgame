@@ -1,0 +1,55 @@
+html, body {
+  margin: 0;
+  height: 100%;
+}
+body {
+  background-color:#333;
+}
+
+#terminal {
+  width:100%;
+  box-sizing:border-box;
+  padding: 1em 1.5em 1em 1em;
+  color:green;
+}
+
+.prompt {
+  white-space: nowrap;
+  color: #ffcc00;
+  margin-right: 7px;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-orient: vertical;
+  display: box;
+  box-pack: center;
+  box-orient: vertical;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.input-line {
+  font-family:Courier;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  clear: both;
+}
+.input-line > div:nth-child(2) {
+  font-family:Courier;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+}
+
+.cmdline {
+  font-family:Courier;
+  outline: none;
+  background-color: transparent;
+  margin: 0;
+  width: 100%;
+  font: inherit;
+  border: none;
+  color: inherit;
+}
