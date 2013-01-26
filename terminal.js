@@ -1,11 +1,5 @@
 var state = 0;
 
-var enterHitResolver = function() {
-  if (state == 0) {
-    
-  }
-};
-
 var PlaceToHack = function() {
   this.name = "test" + Math.floor(Math.random() * 100);
   this.difficulty = Math.floor(Math.random() * 5);
