@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>Termimal</title>
+  <script src="terminal.js"></script>
+  <link rel="stylesheet" media="all" href="terminal.css">
+</head>
+<body class="terminal_base">
+  <div id="terminal">
+    <div id="current-line" class="input-line">
+      <div class="prompt">$></div>
+      <input 
+        class="cmdline" 
+        id="cmdline" 
+        autofocus 
+      />
+    </div>
+  </div>
+  <script>
+    document.body.addEventListener('keydown', onEnterListener, false);
+  </script>
+</body>
+</html>
