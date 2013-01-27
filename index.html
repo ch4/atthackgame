@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title></title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <style type="text/css">
+    body {
+      font-family: sans-serif;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      font-weight: lighter;
+      text-transform: lowercase;
+      font-variant: small-caps;
+    }
+
+    .map,
+    .panorama {
+      width: 100%;
+      height: 100px;
+    }
+
+    .with-columns {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .with-columns .map,
+    .with-columns .panorama {
+      display: block;
+      width: 50%;
+      height: 150px;
+      float: left;
+    }
+  </style>
+
+  <script src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.firebase.com/v0/firebase.js"></script>
+  <script src='https://cdn.firebase.com/v0/firebase-auth-client.js' type='text/javascript'></script>
+  <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuDBzrrT_5PAUEowcIa2woWfYueMIB9Zc&sensor=true">
+  </script>
+  <script src="js/gmaps.js"></script>
+  
+  <script>
+  	function LogIntoFirebaseWithFacebook(){
+		var sampleChatRef = new Firebase('https://hackgame.firebaseio.com/');
+		var authClient = new FirebaseAuthClient(sampleChatRef);
+		authClient.login('facebook', function(error, token, user) {
+		  if (!error) {
+		    // You can now do Firebase operations as an authenticated user...
+			alert('User ID: ' + user.id); // '1234'
+			alert('Provider: ' + user.provider); // 'facebook'
+			LoadMap();	
+		  }
+		});
+	}
+	</script>
+	<script type="text/javascript">
+		var testMarkers = [
+			{ title: 'Computer 1',
+			lat: 37.485127,
+			lng: -122.203395,
+			animation: 'bounce',
+			icon: 'img/computers.png',
+			infoWindow: {
+				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p>'
+				}
+			},
+			{ title: 'Computer 2',
+			lat: 37.485637,
+			lng: -122.202151,
+			animation: 'bounce',
+			icon: 'img/computers.png',
+			infoWindow: {
+				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p>'
+				}
+			},
+			{ title: 'Computer 3',
+			lat: 37.486127,
+			lng: -122.201395,
+			animation: 'bounce',
+			icon: 'img/computers.png',
+			infoWindow: {
+				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p>'
+				}
+			},
+			{ title: 'Computer 4',
+			lat: 37.485457,
+			lng: -122.203315,
+			animation: 'bounce',
+			icon: 'img/computers.png',
+			infoWindow: {
+				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p>'
+				}
+			},
+			{ title: 'Computer 5',
+			lat: 37.485007,
+			lng: -122.203195,
+			animation: 'bounce',
+			icon: 'img/computers.png',
+			infoWindow: {
+				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p>'
+				}
+			}
+		];
+		
+		function AddTestMarkers() {
+			testMarkers.forEach(
+				function ShowTestMarker(value) { map.addMarker(value); }
+			);
+		}
+		
+      	$(document).ready(function(){
+	      map = new GMaps({
+	        div: '#map',
+	        lat: 37.485127,
+	        lng: -122.203395
+	      });
+	    });
+    function LoadMap(){
+    	$('#main').hide();
+    	$('#map').height(100);
+    	$('#map').height(window.innerHeight);
+    	AddTestMarkers();		
+	}
+    </script>
+</head>
+
+<body>
+
+  <div id="container">
+    <header>
+    </header>
+    <div id="main">
+		<button onclick="LogIntoFirebaseWithFacebook()">Login</button>
+		<button onclick="LoadMap()">Skip Login</button>
+    </div>
+    
+
+    <footer>
+
+    </footer>
+  </div> <!--! end of #container -->
+	
+	
+	<div id="map" style="height:500;width: 500;"></div>  
+	<!-- <button onclick="AddTestMarkers()">Test Markers</button> -->
+</body>
+</html>
