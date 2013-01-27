@@ -1,13 +1,8 @@
 var state = 0;
-var SCORE = 1000;
-var NUM_SUCCESS = 0;
-var NUM_FAIL = 0;
 
-
-
-var PlaceToHack = function() {
-  this.name = "test" + Math.floor(Math.random() * 100);
-  this.difficulty = Math.floor(Math.random() * 5);
+var PlaceToHack = function(name, diff) {
+  this.name = name;
+  this.difficulty = diff;
   this.password = this.generatePassword();
 };
 
@@ -38,12 +33,14 @@ PlaceToHack.prototype.getRandC_ = function(pass, diff) {
 };
 
 PlaceToHack.prototype.generatePassword = function() {
+  if (this.difficulty < 3) {
+    return "qwerty";
+  }
   var len = Math.floor(Math.random() * 5) + this.difficulty + 3;
   var pass = '';
   for (var i = 0; i < len; ++i) {
     pass += this.getRandC_(pass, this.difficulty);
   }
-  console.log(pass);
   return pass;
 };
 
@@ -59,19 +56,12 @@ var HackingMode = function() {
 HackingMode.prototype.stopHacking = function(score) {
   state = 1 - state;
   normalMode.init();
-  clearCmd();
-  SCORE += score;
-  if (score > 0) {
-    ++NUM_SUCCESS;
-  } else {
-    ++NUM_FAIL;
-  }
+  normalMode.addScore(score);
 };
 
 HackingMode.prototype.loadingHacking = function() {
   addNewLine('Spy program is running...');
   var pass = this.passToGuess_;
-  console.log(pass);
   window.setTimeout(
     function() {
       addNewLine('Connection stable...');
@@ -134,14 +124,10 @@ HackingMode.prototype.enterHit = function(command) {
     var numberCorrectOnWrongPlaces = this.getNumberCorrectOnWrongPlaces_(word);
     if (numberCorrect == word.length) {
       addNewLine("You are in! Processing getting information... Done!");
-      var fn = this.stopHacking;
-      window.setTimeout(
-          function() {
-            fn(this.successScore_);
-          }, 3000);
+      this.stopHacking(50);
     } else if (this.attempts_ == 1) {
       addNewLine("Out of the attempts! You losing the hacker score!");
-      this.stopHacking(this.negativeScore_);
+      this.stopHacking(-50);
     } else if (Math.floor(Math.random() * 1000) % 32 == 0) {
       addNewLine("You have been found! It is better to get out of here!");
       this.stopHacking(0);

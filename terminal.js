@@ -1,4 +1,34 @@
+var testNames = [
+  'alfa',
+  'beta',
+  'gamma',
+  'mike',
+  'alfea5',
+  'storage',
+  'at&t',
+  'cobalt',
+  'major',
+  'minor',
+  'hacker8',
+  'baby',
+  'bro',
+  'bro_laptop',
+  'bstinson',
+  'mikej',
+  'vasil',
+  'jake1',
+  'jake123',
+  'robs',
+  'rob-winphone',
+  'abcd',
+  'qwerty',
+  'stop'
+];
+
 var NormalMode = function() {
+  this.score_ = 1000;
+  this.num_succ_ = 0;
+  this.num_total_ = 0;
   this.placesToHack_ = [];
   this.helpText_ =
     'This is the hacker game. To get the list of the devices' +
@@ -7,10 +37,36 @@ var NormalMode = function() {
   this.init();
 };
 
+NormalMode.prototype.addScore = function(score) {
+  this.score_ += score;
+  if (score > 0) {
+    ++this.num_succ_;
+  }
+  ++this.num_total_;
+};
+
 NormalMode.prototype.init = function() {
   // TODO: Generate normal addresses
+  var start = Math.floor(Math.random() * 15);
+  var names = [];
+  var diff = [];
+  var j = 0;
+  for (var i = start; j < 10; i = (i + 1) % 24) {
+    names[j] = testNames[i];
+    diff[j] = Math.floor(Math.random() * 5 + 1);
+    ++j;
+  }
+  var testMarkers = [];
   for (var i = 0; i < 10; ++i) {
-    this.placesToHack_[i] = new PlaceToHack();
+    testMarkers[i] = {
+      name: names[i],
+      diff: diff[i]
+    };
+  }
+  localStorage["testMarkers"] = testMarkers;
+  var items = localStorage["testMarkers"];
+  for (var i = 0; i < 10; ++i) {
+    this.placesToHack_[i] = new PlaceToHack(names[i], diff[i]);
   }
 };
 
@@ -30,9 +86,9 @@ NormalMode.prototype.enterHit = function(command) {
   } else if (command == 'clear' || command == 'c') { 
     clearCmd();
   } else if (command == 'score' || command == 's') {
-    addNewLine("Your hacker score is: " + SCORE);
-    addNewLine("Number successful attacks: " + NUM_SUCCESS);
-    addNewLine("Number of attacks: " + (NUM_SUCCESS + NUM_FAIL));
+    addNewLine("Your hacker score is: " + this.score_);
+    addNewLine("Number successful attacks: " + this.num_succ_);
+    addNewLine("Number of attacks: " + this.num_total_);
   } else {
     var sp = command.split(" ");
     if (sp.length == 2 && 
@@ -129,7 +185,6 @@ var clearCmd = function() {
 var onEnterListener = function(e) {
   if (e.keyCode == 13) { // Enter
     var command = document.getElementById('cmdline').value;
-    console.log('Command that was entered: ' + command);
     enterHitResolver(command);
   }
 };
