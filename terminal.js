@@ -1,34 +1,22 @@
-var state = 0;
-
-var PlaceToHack = function() {
-  this.name = "test" + Math.floor(Math.random() * 100);
-  this.difficulty = Math.floor(Math.random() * 5);
-};
-
-PlaceToHack.prototype.toString = function() {
-  return "name: " + this.name + "  |  difficulty: " + this.difficulty;
-}
-
-
 var NormalMode = function() {
   this.placesToHack_ = [];
   this.helpText_ =
     'This is the hacker game. To get the list of the devices' +
     ' you can hack use "list" or "l" command, to start hacking the ' +
-    'device type "hack (or h) [device name]."';
-  this.init_();
+    'device type "hack (or h) [device name]." To look at your score type "score (s)"';
+  this.init();
 };
 
-NormalMode.prototype.init_ = function() {
+NormalMode.prototype.init = function() {
   // TODO: Generate normal addresses
   for (var i = 0; i < 10; ++i) {
     this.placesToHack_[i] = new PlaceToHack();
   }
 };
 
-NormalMode.beginHacking = function(placeToHack) {
+NormalMode.prototype.beginHacking = function(placeToHack) {
   state = 1 - state;
-  //hackingMode.init(placeToHack);
+  hackingMode.init(placeToHack);
 };
 
 NormalMode.prototype.enterHit = function(command) {
@@ -41,6 +29,10 @@ NormalMode.prototype.enterHit = function(command) {
     }
   } else if (command == 'clear' || command == 'c') { 
     clearCmd();
+  } else if (command == 'score' || command == 's') {
+    addNewLine("Your hacker score is: " + SCORE);
+    addNewLine("Number successful attacks: " + NUM_SUCCESS);
+    addNewLine("Number of attacks: " + (NUM_SUCCESS + NUM_FAIL));
   } else {
     var sp = command.split(" ");
     if (sp.length == 2 && 
@@ -56,7 +48,7 @@ NormalMode.prototype.enterHit = function(command) {
       if (id === -1) {
         addNewLine("Can not recognize name to hack! Try again.");
       } else {
-        this.beginHacking(this.placesToHack[id]);
+        this.beginHacking(this.placesToHack_[id]);
         return;
       }
     } else {
@@ -66,7 +58,7 @@ NormalMode.prototype.enterHit = function(command) {
 };
 
 var normalMode = new NormalMode();
-//var hackingMode = new HackingMode;
+var hackingMode = new HackingMode();
 
 var createNewPrompt = function() {
   var new_input = document.createElement('div');
@@ -118,7 +110,7 @@ var enterHitResolver = function(command) {
   if (state == 0) {
     normalMode.enterHit(command);    
   } else {
-  // TODO: hacking mode
+    hackingMode.enterHit(command);
   }
 };
 
