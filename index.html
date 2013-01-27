@@ -13,6 +13,7 @@
   <style type="text/css">
     body {
       font-family: sans-serif;
+      background: #000000;
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -58,8 +59,8 @@
 		authClient.login('facebook', function(error, token, user) {
 		  if (!error) {
 		    // You can now do Firebase operations as an authenticated user...
-			alert('User ID: ' + user.id); // '1234'
-			alert('Provider: ' + user.provider); // 'facebook'
+			//alert('User ID: ' + user.id); // '1234'
+			//alert('Provider: ' + user.provider); // 'facebook'
 			LoadMap();	
 		  }
 		});
@@ -73,8 +74,9 @@
 			animation: 'bounce',
 			icon: 'img/computers.png',
 			infoWindow: {
-				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p><br><a href="term.html">Hack!</a>'
-				}
+				  content: '<p>Difficulty: ' + '1' + '</p><br><a href="term.html">Hack!</a>'
+				},
+			diff: 1
 			},
 			{ title: 'Computer 2',
 			lat: 37.485637,
@@ -82,8 +84,9 @@
 			animation: 'bounce',
 			icon: 'img/computers.png',
 			infoWindow: {
-				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p><br><a href="term.html">Hack!</a>'
-				}
+				  content: '<p>Difficulty: ' + '2' + '</p><br><a href="term.html">Hack!</a>'
+				},
+			diff: 2
 			},
 			{ title: 'Computer 3',
 			lat: 37.486127,
@@ -91,8 +94,9 @@
 			animation: 'bounce',
 			icon: 'img/computers.png',
 			infoWindow: {
-				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p><br><a href="term.html">Hack!</a>'
-				}
+				  content: '<p>Difficulty: ' + '3' + '</p><br><a href="term.html">Hack!</a>'
+				},
+			diff: 3
 			},
 			{ title: 'Computer 4',
 			lat: 37.485457,
@@ -100,8 +104,9 @@
 			animation: 'bounce',
 			icon: 'img/computers.png',
 			infoWindow: {
-				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p><br><a href="term.html">Hack!</a>'
-				}
+				  content: '<p>Difficulty: ' + '4' + '</p><br><a href="term.html">Hack!</a>'
+				},
+			diff: 4
 			},
 			{ title: 'Computer 5',
 			lat: 37.485007,
@@ -109,14 +114,31 @@
 			animation: 'bounce',
 			icon: 'img/computers.png',
 			infoWindow: {
-				  content: '<p>Difficulty: ' + (Math.floor((Math.random()*4)+1)) + '</p><br><a href="term.html">Hack!</a>'
-				}
+				  content: '<p>Difficulty: ' + '5' + '</p><br><a href="term.html">Hack!</a>'
+			},
+			diff: 5
 			}
 		];
 		
 		function AddTestMarkers() {
-			testMarkers.forEach(
-				function ShowTestMarker(value) { map.addMarker(value); }
+			var targets = localStorage.getItem("testMarkers");
+			//testMarkers.forEach(
+			//	function ShowTestMarker(value) { map.addMarker(value); }
+			//);
+			targets.forEach(
+				function ShowTestMarker(value) { 
+					var mark = { title: value.name,
+						lat: 37.485007 + ((Math.random()*0.5)-0.5),
+						lng: -122.203195 + ((Math.random()*0.5)-0.5),
+						animation: 'bounce',
+						icon: 'img/computers.png',
+						infoWindow: {
+							  content: '<p>Difficulty: ' + value.diff + '</p><br><a href="term.html">Hack!</a>'
+						}
+					}
+					
+					map.addMarker(mark); 
+				}
 			);
 		}
 		
@@ -129,7 +151,7 @@
 	    });
     function LoadMap(){
     	$('#main').hide();
-    	$('#map').height(100);
+    	$('#map').height(1024);
     	$('#map').height(window.innerHeight);
     	AddTestMarkers();		
 	}
@@ -140,6 +162,7 @@
 
   <div id="container">
     <header>
+    	<img src="img/splash.png" style="width:100%; height:100%;">
     </header>
     <div id="main">
 		<button onclick="LogIntoFirebaseWithFacebook()">Login</button>
